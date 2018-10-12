@@ -51,7 +51,7 @@ var appSrcObject = {
   "users": {
     "group": {
       "database":1
-    }
+    },
     "fields": {
       "id": {
         "type": "BIGINT",
@@ -437,6 +437,7 @@ writeLine("appname.sql", "\n\nSET FOREIGN_KEY_CHECKS = 1;");
 
 //NodeJS - Write base object class files --
 
+/*
 writeLine("base/README.md", "# Generated CRUD Classes #");
 
 writeLine("base/README.md", "\n\nCopy these classes to your " + projectName + " project root.");
@@ -571,3 +572,4 @@ writeLine("appname.sql", "\n\nSET FOREIGN_KEY_CHECKS = 1;");
 /////////////////////////////////////////////
 
 // For each table, generate a create/update method, a read method for active records, a read method for all records, and a soft delete method to process a list of records (even a list of 1)
+*/
