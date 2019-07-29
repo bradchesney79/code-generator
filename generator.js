@@ -87,39 +87,31 @@ var appSrcObject = {
     "fields": {
       "id": {
         "fieldType": "BIGINT",
-
         "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the user",
-
       },
       "userName": {
         "fieldType": "CHAR",
-        "typeModifiers": "UNIQUE",
         "fieldLength": 255,
-        "canonSanitValid": "required,userName,utf-8",
+        "canonSanitValid": "unique,required,userName,utf-8",
         "comment": "The uniqe user name associated with this user",
-
       },
       "firstName": {
         "fieldType": "CHAR",
         "fieldLength": 255,
         "canonSanitValid": "required,firstName,utf-8",
         "comment": "The first name of the user",
-
       },
       "lastName": {
         "fieldType": "CHAR",
         "fieldLength": 255,
         "canonSanitValid": "required,lastName,utf-8",
         "comment": "The last name of the user",
-
       },
       "gender": {
         "fieldType": "TINYINT",
-
-        "canonSanitValid": "integer,>=0",
-        "comment": "The gender of the user",
-
+        "canonSanitValid": "integer,unsigned,>=0",
+        "comment": "The gender of the user 0=M, 1=F, & 2=other",
       }
     }
   },
@@ -128,14 +120,11 @@ var appSrcObject = {
     "fields": {
       "id": {
         "fieldType": "BIGINT",
-
         "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of an email",
-
       },
       "usersId": {
         "fieldType": "BIGINT",
-
         "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the associated user",
         "index":"true",
@@ -150,7 +139,6 @@ var appSrcObject = {
         "fieldType": "BIGINT",
         "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of an address",
-
       },
       "usersId": {
         "fieldType": "BIGINT",
@@ -164,9 +152,7 @@ var appSrcObject = {
         "fieldLength": 255,
         "canonSanitValid": "street1",
         "comment": "The first required line of a US address",
- 
       }
-
     }
   },
   "phones": {
@@ -176,7 +162,6 @@ var appSrcObject = {
         "fieldType": "BIGINT",
         "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of a phone number",
-
       },
       "usersId": {
         "fieldType": "BIGINT",
@@ -194,7 +179,6 @@ var appSrcObject = {
         "fieldType": "BIGINT",
         "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of an account",
-
       },
       "usersId": {
         "fieldType": "BIGINT",
@@ -208,7 +192,6 @@ var appSrcObject = {
         "canonSanitValid": "required, integer, >=0",
         "comment": "The customer facing account number",
         "index":"true",
-
       }
     }
   },
@@ -217,14 +200,12 @@ var appSrcObject = {
     "fields": {
       "id": {
         "fieldType": "BIGINT",
-        "canonSanitValid": "required,integer,>=0",
-        "validation": [],
+        "canonSanitValid": "required,unsigned,integer,>=0",
         "comment": "The numeric UUID of a transaction",
-
       },
       "accountsId": {
         "fieldType": "BIGINT",
-        "canonSanitValid": "required,integer,>=0",
+        "canonSanitValid": "required,integer,unsigned,>=0",
         "comment": "The numeric UUID of the associated account",
         "index":"true",
         "parent": "accounts"
@@ -234,7 +215,6 @@ var appSrcObject = {
         "fieldLength": "13,4",
         "canonSanitValid": "required, numeric",
         "comment": "The value of the transaction",
-
       },
       "transactionDate": {
         "fieldType": "INT",
@@ -455,4 +435,3 @@ if (!fs.existsSync("base/")){
 /////////////////////////////////////////////
 
 // For each table, generate a create/update method, a read method for active records, a read method for all records, and a soft delete method to process a list of records (even a list of 1)
-
