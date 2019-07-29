@@ -1,3 +1,7 @@
+# Something I Once Saw or Heard Somewhere
+
+I lovingly call this project The Chainsaw Factory. I conceived the idea to build my first Magnum Opus and then the second and so on-- forgive the obvious lingual gaffe. I once saw or heard someone say to meter your work appropriately. If you need to chop down one tree, an axe might suffice. Maybe a chainsaw would be better, but you may be waylaid if you take the time build all the things needed for a chainsaw factory as you probably don't need a constant stream of chainsaws at your disposal. I decided I needed a chainsaw factory, and this is it.
+
 # Make Code with Code
 
 Hello, thank you for coming. I am sorry this may be of questionable value to people operating in the enterprise space. The junk I am about to share is best used on medium sized and smaller things. Especially things where you just have to crank it out and move on.
