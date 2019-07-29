@@ -3,3 +3,4 @@ appname.sql
 node_modules
 
 /vendor/
+/base/
