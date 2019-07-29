@@ -1,3 +1,5 @@
 *.swp
 appname.sql
 node_modules
+
+/vendor/
