@@ -1,7 +1,40 @@
 #! /usr/bin/env node
 
+/*
+Very First is the configuration files
+
+Next is ingensting the configs to create this file
+
+
+*/
+
+
+/*
+Done
+
+Create a basic object form
+
+Turn that object into a database
+
+
+Doing
+
+Create the base level objects
+
+Create CRUD endpoints that use the base level objects
+
+    So much canonicalization, sanitizing, and validation...
+
+Create the front end forms from the basic object
+
+
+*/
+
+
+
 //NodeJS requirements
 var fs = require('fs');
+//require('dotenv').config();
 
 
 //###### run this script -- "this" is the app that is laid down on top of the system
@@ -17,156 +50,196 @@ var fs = require('fs');
 
 var projectName = "test_project";
 
+var databases = [
+  {
+    "name": "main",
+    "users": [
+      {
+        "name": "readonly",
+        "permissions": [
+          "read"
+        ],
+        "password": "password"
+        // from config file...
+      },
+      {
+        "name": "readwrite",
+        "permissions": [
+          "read",
+          "write"
+        ],
+        "password": "password"
+      },
+      {
+        "name": "writeonly",
+        "permissions": [
+          "write"
+        ],
+        "password": "password"
+      }
+    ]
+  }
+];
+
 var appSrcObject = {
   "users": {
+    "database": "main",
     "fields": {
       "id": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED, NOT NULL",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the user",
-        "parent": ""
+
       },
       "userName": {
-        "type": "CHAR",
+        "fieldType": "CHAR",
         "typeModifiers": "UNIQUE",
-        "length": 255,
+        "fieldLength": 255,
         "canonSanitValid": "required,userName,utf-8",
         "comment": "The uniqe user name associated with this user",
-        "parent": ""
+
       },
       "firstName": {
-        "type": "CHAR",
-        "length": 255,
+        "fieldType": "CHAR",
+        "fieldLength": 255,
         "canonSanitValid": "required,firstName,utf-8",
         "comment": "The first name of the user",
-        "parent": ""
+
       },
       "lastName": {
-        "type": "CHAR",
-        "length": 255,
+        "fieldType": "CHAR",
+        "fieldLength": 255,
         "canonSanitValid": "required,lastName,utf-8",
         "comment": "The last name of the user",
-        "parent": ""
+
       },
       "gender": {
-        "type": "TINYINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "m||f",
+        "fieldType": "TINYINT",
+
+        "canonSanitValid": "integer,>=0",
         "comment": "The gender of the user",
-        "parent": ""
+
       }
     }
   },
   "emails": {
+    "database": "main",
     "fields": {
       "id": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of an email",
-        "parent": ""
+
       },
       "usersId": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the associated user",
+        "index":"true",
         "parent": "users"
       }
     }
   },
   "addresses": {
+    "database": "main",
     "fields" : {
       "id": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of an address",
-        "parent": ""
+
       },
       "usersId": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the associated user",
+        "index":"true",
         "parent": "users"
+      },
+      "street1": {
+        "fieldType": "CHAR", 
+        "fieldLength": 255,
+        "canonSanitValid": "street1",
+        "comment": "The first required line of a US address",
+ 
       }
+
     }
   },
   "phones": {
+    "database": "main",
     "fields" : {
       "id": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of a phone number",
-        "parent": ""
+
       },
       "usersId": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the associated user",
+        "index":"true",
         "parent": "users"
       }
     }
   },
   "accounts": {
+    "database": "main",
     "fields": {
       "id": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of an account",
-        "parent": ""
+
       },
       "usersId": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the associated user",
+        "index":"true",
         "parent": "users"
       },
       "accountNumber": {
-        "type": "INT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required, integer, unsigned",
+        "fieldType": "INT",
+        "canonSanitValid": "required, integer, >=0",
         "comment": "The customer facing account number",
         "index":"true",
-        "parent": ""
+
       }
     }
   },
   "transactions": {
+    "database": "main",
     "fields": {
       "id": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
+        "validation": [],
         "comment": "The numeric UUID of a transaction",
-        "parent": ""
+
       },
       "accountsId": {
-        "type": "BIGINT",
-        "typeModifiers": "UNSIGNED",
-        "canonSanitValid": "required,integer,unsigned",
+        "fieldType": "BIGINT",
+        "canonSanitValid": "required,integer,>=0",
         "comment": "The numeric UUID of the associated account",
+        "index":"true",
         "parent": "accounts"
       },
       "transactionValue": {
-        "type": "DEC",
-        "length": "13,4",
-        "canonSanitValid": "required, integer, unsigned",
+        "fieldType": "DEC",
+        "fieldLength": "13,4",
+        "canonSanitValid": "required, numeric",
         "comment": "The value of the transaction",
-        "parent": ""
+
       },
       "transactionDate": {
-        "type": "INT",
-        "typeModifiers": "UNSIGNED, NOT NULL",
-        "canonSanitValid": "required, integer, unsigned",
+        "fieldType": "INT",
+        "canonSanitValid": "required, integer, >=0",
         "comment": "The UNIX timestamp of the transaction",
-        "parent": ""
       }
     }
   }
@@ -174,7 +247,9 @@ var appSrcObject = {
 
 //NodeJS - code generator helper code
 
-topLevelObjectsCount = appSrcObject.length;
+const appObject = JSON.parse(JSON.stringify(appSrcObject));
+
+const topLevelObjectsCount = appSrcObject.length;
 
 function writeLine(fileName, content) {
 
@@ -186,6 +261,39 @@ function writeLine(fileName, content) {
     console.log("File write failed");
   });
 }
+
+rmDir = function(dirPath, removeSelf) {
+  if (removeSelf === undefined)
+    removeSelf = true;
+  try { var files = fs.readdirSync(dirPath); }
+  catch(e) { return; }
+  if (files.length > 0)
+    for (var i = 0; i < files.length; i++) {
+      var filePath = dirPath + '/' + files[i];
+      if (fs.statSync(filePath).isFile())
+        fs.unlinkSync(filePath);
+      else
+        rmDir(filePath);
+    }
+  if (removeSelf)
+    fs.rmdirSync(dirPath);
+};
+
+lowerFirstCharToUpper = function(string) {
+  return string.replace(
+    /^\w/,
+    function (chr) {
+      return chr.toUpperCase();
+    }
+  );
+}
+
+var capitalProjectName = projectName.replace(
+  /^\w/,
+  function (chr) {
+    return chr.toUpperCase();
+  }
+);
 
 //NodeJS - global helper values
 
@@ -203,12 +311,11 @@ else {
 
 //NodeJS - delete the generated ORM CRUD methods creator file if it exists
 
-if (fs.existsSync("crud.sh")) {
-  console.log("crud.sh deleted");
-  fs.unlinkSync("crud.sh");
+if (fs.existsSync("base/README.md")) {
+  rmDir("base/", true);
 }
 else {
-  console.log("No crud.sh file to delete");
+  console.log("No base/ files to delete");
 }
 
 //NodeJS - delete the generated endpoint creator file if it exists
@@ -221,7 +328,17 @@ else {
   console.log("No endpoint.sh file to delete");
 }
 
-//NodeJS - delete the generated Angular form stubs creator file if it exists
+//NodeJS - delete the generated tests stubs creator file if it exists
+
+if (fs.existsSync("tests.sh")) {
+  console.log("tests.sh deleted");
+  fs.unlinkSync("tests.sh");
+}
+else {
+  console.log("No test.sh file to delete");
+}
+
+//NodeJS - delete the generated Ionic form stubs creator file if it exists
 
 if (fs.existsSync("forms.sh")) {
   console.log("forms.sh deleted");
@@ -232,7 +349,7 @@ else {
 }
 
 
-//NodeJS - Write generator files -- 
+//NodeJS - Write DB generator files --
 
 writeLine("appname.sql", "### Generated App SQL ###");
 
@@ -244,111 +361,98 @@ writeLine("appname.sql", "\n\nUSE " + projectName + ";");
 
 writeLine("appname.sql", "\n\nSET FOREIGN_KEY_CHECKS = 0;");
 
-for (var topLevelObject in appSrcObject) {
-  if (appSrcObject.hasOwnProperty(topLevelObject)) { // <-- example of nice to have resilient code feature
-    console.log(`appSrcObject.${topLevelObject} = ${appSrcObject[topLevelObject]}`);
-    
+Object.keys(appObject).forEach(
+  function(topLevelObject) {
     writeLine("appname.sql", "\n\nCREATE TABLE IF NOT EXISTS `" + topLevelObject + "` (");
 
-    for (var subordinateLevelObject in appSrcObject[topLevelObject]) {
-      console.log("  " + `appSrcObject.${topLevelObject}.${subordinateLevelObject} = ${appSrcObject[topLevelObject][subordinateLevelObject]}`);
+    let foreignKeys = [];
 
-      //if (subordinateLevelObject == "fields") {
-        for (var field in appSrcObject[topLevelObject][subordinateLevelObject]) {
-          console.log("    field: " + `appSrcObject.${topLevelObject}.${subordinateLevelObject}.field = ${appSrcObject[topLevelObject][subordinateLevelObject][field]}` + " = " + field);
+    Object.keys(appObject[topLevelObject].fields).forEach(
 
-          //console.log("Top level object: ", "  `" + topLevelObject + "Id` " +  "");
-          writeLine("appname.sql", "\n  `" + field + "`");
+      function(tableField) {
 
+        let fieldLength = "";
+        let signed = "";
+        let required = " NULL";
+        let defaultValue = "";
 
+        if (typeof appObject[topLevelObject].fields[tableField].fieldLength != "undefined") {
+          fieldLength = " (" +  appObject[topLevelObject].fields[tableField].fieldLength + ")";
+        }
 
-          var parent = [];
-          var index = [];
-
-          for (var fieldProperty in appSrcObject[topLevelObject][subordinateLevelObject][field]) {
-          console.log("      fieldProperty: " + `appSrcObject.${topLevelObject}.${subordinateLevelObject}.${field}.fieldProperty = ${appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty]}` + " = " + fieldProperty);
-
-            if (fieldProperty == "type") {
-              writeLine("appname.sql", " " + appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty]);
-              if (appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty] == "CHAR") {
-              }
-              if (appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty] == "BIGINT") {
-              }
-              if (appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty] == "INT") {
-              }
-              if (appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty] == "TINYINT") {
-              }
-            }
-
-            if (fieldProperty == "length") {
-              writeLine("appname.sql", "(" + appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty] + ")");
-            }
-
-            if (fieldProperty == 'typeModifiers') {
-
-              var typeModifiers = appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty].split(',');
-              typeModifiers.forEach(
-                function(value, i) 
-                {
-                  writeLine("appname.sql", " " + value);
-                }
-              );
-            }
-
-            if (fieldProperty == "comment") {
-
-              writeLine("appname.sql", " COMMENT '" + appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty] + "',");
-            }
-
-            if (fieldProperty == "index") {
-
-              if (appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty].length > 0) {
-                index.push(field);
-              }
-            }
-
-            if (fieldProperty == "parent") {
-
-              if (appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty].length > 0) {
-                parent.push(appSrcObject[topLevelObject][subordinateLevelObject][field][fieldProperty]);
-              }
-            }
+        if (typeof appObject[topLevelObject].fields[tableField].canonSanitValid != "undefined") {
+          if (appObject[topLevelObject].fields[tableField].canonSanitValid.indexOf(">=0") >= 0
+          || appObject[topLevelObject].fields[tableField].canonSanitValid.indexOf("unsigned") >= 0) {
+            signed = " UNSIGNED";
+          }
+          if (appObject[topLevelObject].fields[tableField].canonSanitValid.indexOf("required") >= 0) {
+            required = " NOT NULL";
           }
         }
-      //}
-    }
 
-    writeLine("appname.sql", "\n  `created` INT NOT NULL COMMENT 'The UTC UNIX timestamp of when this record was created',");
+        if (appObject[topLevelObject].fields[tableField].fieldType == "TINYINT"
+        || appObject[topLevelObject].fields[tableField].fieldType == "INT"
+        || appObject[topLevelObject].fields[tableField].fieldType == "BIGINT"
+        || appObject[topLevelObject].fields[tableField].fieldType == "DEC") {
+          defaultValue = " DEFAULT 0";
+        }
+        else if (false) {
+          // non numeric & string tests stacked here...
+        }
+        else {
+          defaultValue = " DEFAULT \"\"";
+        }
 
-    writeLine("appname.sql", "\n  `modified` INT NOT NULL COMMENT 'The UTC UNIX timestamp of when this record was modified',");
+        writeLine("appname.sql", "\n" + "  `" + tableField + "` " + appObject[topLevelObject].fields[tableField].fieldType + fieldLength + signed + required + defaultValue + " COMMENT '" + appObject[topLevelObject].fields[tableField].comment + "',");
+        if(typeof appObject[topLevelObject].fields[tableField].parent != "undefined") {
+          foreignKeys.push(appObject[topLevelObject].fields[tableField].parent);
+        }
+      }
+    );
+    writeLine("appname.sql", "\n  `created` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'The UTC UNIX timestamp of when this record was created',");
 
-    writeLine("appname.sql", "\n  `modifiedBy` CHAR(255) NOT NULL COMMENT 'The numeric UUID user id of the user making the modification',");
+    writeLine("appname.sql", "\n  `modified` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'The UTC UNIX timestamp of when this record was modified',");
+
+    writeLine("appname.sql", "\n  `modifiedBy` CHAR(255) NOT NULL DEFAULT \"\" COMMENT 'The numeric UUID user id of the user making the modification',");
 
     writeLine("appname.sql", "\n  PRIMARY KEY (`id`)");
-    
-    if (index.length > 0) {
-      //additional indexes go here
-      index.forEach(
-        function(value, i) {
-          console.log("index: ", value);
-          writeLine("appname.sql", ",\n  INDEX (`" + value + "`)");
-        }
-      )
-    }
 
-    if (parent.length > 0) {
-      //foreign key BS goes here
-      parent.forEach(
-        function(value, i) {
-          console.log("FK: ", value);
-          writeLine("appname.sql", ",\n  FOREIGN KEY (" + value + "Id) REFERENCES " + value + "(id)");
-        }
-      )
-    }
+    foreignKeys.forEach(
+      function(foreignKey) {
+        writeLine("appname.sql", ",\n  INDEX (`" + foreignKey + "Id`)");
+        writeLine("appname.sql", ",\n  FOREIGN KEY (" + foreignKey + "Id) REFERENCES " + foreignKey + "(id)");
+      }
+    )
 
     writeLine("appname.sql", "\n) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;");
-
   }
-}
+);
 
 writeLine("appname.sql", "\n\nSET FOREIGN_KEY_CHECKS = 1;");
+
+
+//NodeJS - Write base object class files --
+
+fs.existsSync("base") || fs.mkdirSync("base");
+
+writeLine("base/README.md", "# Generated CRUD Classes #");
+
+writeLine("base/README.md", "\n\nCopy these classes to your " + projectName + " project root.");
+
+writeLine("base/README.md", "\n\nThe classes are namespaced, import them with Composer for lazy loading;");
+
+if (!fs.existsSync("base/")){
+    fs.mkdirSync("base/");
+}
+
+
+
+
+/////////////////////////////////////////////
+//
+// Data Access Library
+//
+/////////////////////////////////////////////
+
+// For each table, generate a create/update method, a read method for active records, a read method for all records, and a soft delete method to process a list of records (even a list of 1)
+
